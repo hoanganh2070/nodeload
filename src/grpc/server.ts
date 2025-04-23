@@ -4,6 +4,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createUser, listUsers } from '../handlers/user.handler';
+import logger from '../utils/logger';
+import { createTask, getDownloadFile } from '../handlers/task.handle';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,12 +31,14 @@ function main() {
     // Đảm bảo đúng package và service name
     server.addService(proto.nodeload.DownloadService.service, {
         CreateUser: createUser,
-        ListUsers : listUsers
+        ListUsers : listUsers,
+        CreateTask : createTask,
+        GetDownloadFile : getDownloadFile
     });
 
     server.bindAsync('0.0.0.0:6300', grpc.ServerCredentials.createInsecure(), () => {
-        console.log('Server running at http://0.0.0.0:6300');
-        server.start();
+        logger.info('Grpc server running at http://0.0.0.0:6300');
+
     });
 }
 

@@ -51,8 +51,6 @@ enum DownloadType {
 message CreateTaskRequest {
   string user_id = 1;
   string url = 2;
-  string metadata = 3; // JSON string
-  DownloadType type = 4;
 }
 
 message CreateTaskResponse {
@@ -94,8 +92,5 @@ message GetDownloadFileRequest {
 }
 
 message GetDownloadFileResponse {
-  string task_id = 1;
-  string file_path = 2;
-  int32 file_size = 3;
-  bytes data = 4;
+  bytes data = 1;
 }
