@@ -1,0 +1,58 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id       String   @id @default(uuid()) @db.Uuid
+  username      String?
+  password  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tasks     Task[]
+}
+
+
+model Task {
+  id       String   @id @default(uuid()) @db.Uuid
+  url     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id])
+  metadata  Json?
+  status    DownloadStatus
+  type      DownloadType
+  progress  Float?
+  error     String?
+  filePath  String?
+  fileSize  Int?
+  fileName  String?
+}
+
+enum DownloadType {
+  HTTP
+  FTP
+  SFTP
+  SCP
+  RSYNC
+  WEBDAV
+  S3
+}
+
+
+enum DownloadStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+

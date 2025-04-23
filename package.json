@@ -1,0 +1,31 @@
+{
+  "name": "nodeload",
+  "module": "server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec tsx src/server.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
+    "@grpc/proto-loader": "^0.7.15",
+    "@prisma/client": "^6.6.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.3.2",
+    "jsonwebtoken": "^9.0.2",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "license": "MIT"
+}

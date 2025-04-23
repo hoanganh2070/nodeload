@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package nodeload;
+
+service DownloadService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc ListUsers (Empty) returns (ListUsersResponse);
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
+  rpc GetTasksByUserId (GetTasksByUserIdRequest) returns (GetTasksByUserIdResponse);
+  rpc GetDownloadFile (GetDownloadFileRequest) returns (stream GetDownloadFileResponse);
+}
+
+// --- User ---
+message CreateUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message CreateUserResponse {
+  string id = 1;
+  string username = 2;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+// --- Task ---
+enum DownloadStatus {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  COMPLETED = 2;
+  FAILED = 3;
+}
+
+enum DownloadType {
+  HTTP = 0;
+  FTP = 1;
+  SFTP = 2;
+  SCP = 3;
+  RSYNC = 4;
+  WEBDAV = 5;
+  S3 = 6;
+}
+
+message CreateTaskRequest {
+  string user_id = 1;
+  string url = 2;
+  string metadata = 3; // JSON string
+  DownloadType type = 4;
+}
+
+message CreateTaskResponse {
+  string id = 1;
+  string url = 2;
+  DownloadStatus status = 3;
+}
+
+message Task {
+  string id = 1;
+  string url = 2;
+  string created_at = 3;
+  string updated_at = 4;
+  string user_id = 5;
+  string metadata = 6;
+  DownloadStatus status = 7;
+  DownloadType type = 8;
+  float progress = 9;
+  string error = 10;
+  string file_path = 11;
+  int32 file_size = 12;
+  string file_name = 13;
+}
+
+message GetTasksByUserIdRequest {
+  string user_id = 1;
+}
+
+message GetTasksByUserIdResponse {
+  repeated Task tasks = 1;
+}
+
+// --- Misc ---
+message Empty {}
+
+
+message GetDownloadFileRequest {
+  string task_id = 1;
+}
+
+message GetDownloadFileResponse {
+  string task_id = 1;
+  string file_path = 2;
+  int32 file_size = 3;
+  bytes data = 4;
+}
